@@ -10,6 +10,8 @@ class NGSITranslator {
         const groupedByDevice = apiData.reduce((acc, item) => {
             const { device_id, modality_id, value, observed_at } = item;
     
+
+            // Needed Information for NGSI-LD
             if (!acc[device_id]) {
                 acc[device_id] = {
                     id: `urn:ngsi-ld:Device:${device_id}`,
@@ -36,9 +38,10 @@ class NGSITranslator {
                 }
             }
     
-            if (observed_at) {
+            // Add attribute name and value to response
+            if (observed_at) 
                 acc[device_id]["dateObserved"] = { type: "Property", value: observed_at };
-            }
+            
     
             return acc;
         }, {});
@@ -54,6 +57,7 @@ class NGSITranslator {
             values: [
                 {
                     value: value,
+                    // Extra data (optional)
                     metadata: {
                         unitCode: { type: "Property", value: unit },
                         healthRange: { type: "Property", value: { min, max } },

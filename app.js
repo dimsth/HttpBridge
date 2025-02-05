@@ -10,7 +10,6 @@ const HOST = process.env.HOST || "http://localhost";
 const app = express();
 app.use(morgan("dev"));
 
-// Define routes
 app.use("/ngsi-ld/v1/temporal/entities", temporalRoutes);
 
 // Start the Express server

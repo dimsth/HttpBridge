@@ -1,8 +1,9 @@
 const weatherObservedTypeMap = require("./weatherObservedTypeMaps");
 
+// List of all available NGSI-LD model types
 const typeMaps = {
     "WeatherObserved": weatherObservedTypeMap,
-    // "MobilityObserved": mobilityObservedTypeMap
+    // "WaterQualityObserved": waterQualityObservedTypeMap
 };
 
 module.exports = typeMaps;
