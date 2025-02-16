@@ -1,5 +1,5 @@
 const express = require("express");
-const { getTemporalEntities } = require("../controllers/temporalController");
+const { getTemporalEntities } = require("../controllers/generalControllers");
 
 const router = express.Router();
 

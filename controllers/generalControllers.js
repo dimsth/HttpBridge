@@ -40,7 +40,7 @@ function generateModalityIdParam(type, attributes) {
  * 
  * @param {string} type The NGSI-LD type to retrieve
  * @param {string} [attrs] A comma-separated list of attributes to filter by
- * @param {Function} fetcher The specific fetcher function to use (fetchTemporalData or fetchRealTimeData)
+ * @param {Function} fetcher The specific fetcher function to use (fetchWeatherObservedTemporalData or fetchWeatherObservedRealTimeData)
  * @param {Object} [additionalParams] Additional parameters to pass to the fetcher function
  * @param {Response} res The Express response object
  * @throws {Error} If the type is invalid, no valid attributes are found, or the API request fails
@@ -84,7 +84,7 @@ const fetchEntities = async (type, attrs, fetcher, additionalParams, res) => {
  * @param {Object} [params] Additional parameters for the API request
  * @throws {Error} If the entity type is unsupported
  */
-const fetchTemporalData = async (type, modalityIds, params) => {
+const fetchWeatherObservedTemporalData = async (type, modalityIds, params) => {
     if (!Array.isArray(modalityIds) || modalityIds.length === 0) {
         throw new Error(`Invalid modality IDs for type: ${type}`);
     }
@@ -129,7 +129,7 @@ const fetchTemporalData = async (type, modalityIds, params) => {
  * @throws {Error} If the entity type is unsupported
  */
 
-const fetchRealTimeData = async (type, modalityIdParam) => {
+const fetchWeatherObservedRealTimeData = async (type, modalityIdParam) => {
     switch (type) {
         case "WeatherObserved":
             return axios.get(`${process.env.API_URL}/latest_measurements_averages`, {
@@ -168,7 +168,7 @@ const getTemporalEntities = async (req, res) => {
         time = new Date(new Date(endTime).setDate(new Date(endTime).getDate() - 30)).toISOString(); // 30 days before
     }
 
-    await fetchEntities(type, attrs, fetchTemporalData, { time, endTime }, res);
+    await fetchEntities(type, attrs, fetchWeatherObservedTemporalData, { time, endTime }, res);
 };
 
 /**
@@ -180,7 +180,7 @@ const getTemporalEntities = async (req, res) => {
 const getRealTimeEntities = async (req, res) => {
     console.log("Incoming real-time request:", req.query);
     const { type, attrs } = req.query;
-    await fetchEntities(type, attrs, fetchRealTimeData, {}, res);
+    await fetchEntities(type, attrs, fetchWeatherObservedRealTimeData, {}, res);
 };
 
 module.exports = { getTemporalEntities, getRealTimeEntities };
