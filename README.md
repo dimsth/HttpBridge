@@ -10,25 +10,51 @@ The **HTTP Bridge** serves as a middleware between the **Scorpio Broker** and th
 
 ### **1️. Prerequisites**
 Ensure you have the following installed:
-- **Node.js** (v14 or higher)
+- **Docker** (if running inside a container)
+- **Node.js** (v14 or higher, if running locally)
 - **npm** (Node Package Manager)
 ---
 
 ### **2. Configuration**
 Before running the application, configure the necessary environment variables.
-- API_URL=https://smartcity.heraklion.gr/api
-- PORT=8080
-- HOST=http://localhost
+
+### **Using `.env` File (Recommended)**
+Create a `.env` file in the project root with the following content:
+
+```
+PORT=8080 # Http Bridge Port
+HOST="http://localhost" # Http Bridge Host
+API_URL=https://smartcity.heraklion.gr/open-data-api # Base URL of the API
+```
 
 ### **3. Running the HTTP Bridge**
-Start the server:
+1. Build the Docker Image
 ```
-node app.js
+docker build -t http-bridge .
+```
+
+2. Run the Container
+
+```
+docker run -d --name http-bridge -p 8080:8080 --env-file .env http-bridge
 ```
 
 The bridge will be accessible at: **{HOST}:{PORT}**
 
 Default: **http://localhost:8080**
+
+---
+### **4. Stopping & Removing the Container**
+
+1. To stop the running container:
+```
+docker stop http-bridge
+```
+
+2. To remove the container:
+```
+docker rm http-bridge
+```
 
 ---
 
@@ -45,4 +71,4 @@ Additional entity types can be added dynamically by extending the **Type Mapping
 To support more NGSI-LD models, simply:
 1. **Add a new type mapping** in `typeMaps/`
 2. **Extend `NGSITranslator.js`** to handle the new entity type
-3. **Modify `temporalController.js`** to process the new queries
+3. **Modify `generalControllers.js`** to process the new queries
