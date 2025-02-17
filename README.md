@@ -8,9 +8,9 @@ The **HTTP Bridge** serves as a middleware between the **Scorpio Broker** and th
 
 ## **Getting Started**
 
-### **1️. Prerequisites**
+### **1. Prerequisites**
 Ensure you have the following installed:
-- **Docker** (if running inside a container)
+- **Docker** 
 - **Node.js** (v14 or higher, if running locally)
 - **npm** (Node Package Manager)
 ---
@@ -22,18 +22,23 @@ Before running the application, configure the necessary environment variables.
 Create a `.env` file in the project root with the following content:
 
 ```
-PORT=8080 # Http Bridge Port
-HOST="http://localhost" # Http Bridge Host
+PORT=9010 # Http Bridge Port
+HOST="0.0.0.0" # Http Bridge Host (DONT CHANGE id running with Docker)
 API_URL=https://smartcity.heraklion.gr/open-data-api # Base URL of the API
 ```
 
 ### **3. Running the HTTP Bridge**
-1. Build the Docker Image
+1. Install npm packages
+```
+npm install
+```
+
+2. Build the Docker Image
 ```
 docker build -t http-bridge .
 ```
 
-2. Run the Container
+3. Run the Container
 
 ```
 docker run -d --name http-bridge -p 8080:8080 --env-file .env http-bridge
@@ -72,3 +77,9 @@ To support more NGSI-LD models, simply:
 1. **Add a new type mapping** in `typeMaps/`
 2. **Extend `NGSITranslator.js`** to handle the new entity type
 3. **Modify `generalControllers.js`** to process the new queries
+
+---
+
+## **Extra Links**
+[Scorpio Broker](https://github.com/efntallaris/scorpioBroker)
+[Postman Workplace](https://www.postman.com/payload-geoscientist-32828968/workspace/scorpio-broker-registration)
